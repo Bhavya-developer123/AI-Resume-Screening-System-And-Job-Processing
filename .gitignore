@@ -39,3 +39,19 @@ Thumbs.db
 
 # Uploaded files
 uploads/
+# Environment and secrets
+application.properties
+.env
+
+# Build files
+target/
+*.class
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
