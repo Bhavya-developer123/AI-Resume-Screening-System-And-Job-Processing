@@ -46,3 +46,22 @@ target/
 
 # OS files
 .DS_Store
+# Environment and secrets
+application.properties
+.env
+
+# Build files
+target/
+*.class
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Uploaded resumes
+uploads/
