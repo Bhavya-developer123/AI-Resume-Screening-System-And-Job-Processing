@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.UserRequestDto;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
+
+import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -22,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody UserRequestDto user) {
         User savedUser = userService.createUser(user);
         return ResponseEntity.ok(savedUser);
     }
@@ -34,12 +37,6 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 }
