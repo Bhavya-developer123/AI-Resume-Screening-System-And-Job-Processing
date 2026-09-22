@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.demo.Repository.UserRepository;
 import com.example.demo.dto.UserRequestDto;
 import com.example.demo.entity.User;
 import com.example.demo.exception.DuplicateEmailException;
 import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.repository.UserRepository;
 @Service
 public class UserService {
     private final UserRepository userRepository;

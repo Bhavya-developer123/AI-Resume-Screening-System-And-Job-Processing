@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.Repository.ResumeRepository;
-import com.example.demo.Repository.UserRepository;
 import com.example.demo.dto.ResumeResponseDto;
 import com.example.demo.entity.Resume;
 import com.example.demo.entity.User;
+import com.example.demo.repository.ResumeRepository;
+import com.example.demo.repository.UserRepository;
 
 import java.nio.file.Path;
 @Service
