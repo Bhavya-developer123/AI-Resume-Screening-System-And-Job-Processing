@@ -23,7 +23,10 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
+    @PostMapping("/register")
+public User registerUser(@Valid @RequestBody UserRequestDto request) {
+    return userService.createUser(request);
+}
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody UserRequestDto user) {
         User savedUser = userService.createUser(user);
