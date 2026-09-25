@@ -18,10 +18,11 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
-                    "/api/users/register",
-                    "/api/users/login",
-                    "/api/health"
-                ).permitAll()
+    "/api/users/register",
+    "/api/users/login",
+    "/api/health",
+    "/api/jwt/**"
+).permitAll()
                 .anyRequest().authenticated()
             );
 
