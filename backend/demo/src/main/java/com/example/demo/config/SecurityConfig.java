@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
@@ -17,6 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -35,6 +37,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
 
             .authorizeHttpRequests(auth -> auth
+
                 .requestMatchers(
                     "/api/users/register",
                     "/api/users/login",
@@ -42,7 +45,20 @@ public class SecurityConfig {
                     "/api/jwt/**"
                 ).permitAll()
 
-                .anyRequest().authenticated()
+                .requestMatchers("/api/jobs/**")
+                .hasRole("RECRUITER")
+
+                .requestMatchers("/api/admin/**")
+                .hasRole("ADMIN")
+
+                .requestMatchers("/api/resumes/**")
+                .hasAnyRole("USER", "ADMIN")
+
+                .requestMatchers("/api/match-results/**")
+                .hasAnyRole("USER", "RECRUITER", "ADMIN")
+
+                .anyRequest()
+                .authenticated()
             )
 
             .addFilterBefore(
