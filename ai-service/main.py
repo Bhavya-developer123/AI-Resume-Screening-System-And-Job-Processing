@@ -5,12 +5,14 @@ import tempfile
 from app.services.resume_parser import ResumeParser
 from app.services.text_preprocessor import TextPreprocessor
 from pydantic import BaseModel
+from app.services.skill_extractor import SkillExtractor
 app = FastAPI(
     title="AI Resume Screening Service",
     description="AI service for resume processing and job matching",
     version="1.0.0"
 )
 resume_parser = ResumeParser()
+skill_extractor = SkillExtractor()
 @app.get("/health")
 def health_check():
     return {
@@ -69,3 +71,11 @@ def preprocess_text(request: PreprocessRequest):
             status_code=400,
             detail=str(e)
         )
+class SkillExtractionRequest(BaseModel):
+    text: str
+@app.post("/extract-skills")
+def extract_skills(request: SkillExtractionRequest):
+    try:
+        return skill_extractor.extract_skills(request.text)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
