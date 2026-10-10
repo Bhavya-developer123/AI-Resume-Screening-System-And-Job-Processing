@@ -3,6 +3,8 @@ import os
 import shutil
 import tempfile
 from app.services.resume_parser import ResumeParser
+from app.services.text_preprocessor import TextPreprocessor
+from pydantic import BaseModel
 app = FastAPI(
     title="AI Resume Screening Service",
     description="AI service for resume processing and job matching",
@@ -48,3 +50,22 @@ async def parse_resume(file: UploadFile = File(...)):
     finally:
         if "temp_file_path" in locals() and os.path.exists(temp_file_path):
             os.remove(temp_file_path)
+
+
+text_preprocessor = TextPreprocessor()
+class PreprocessRequest(BaseModel):
+    text: str
+
+
+@app.post("/preprocess-text")
+def preprocess_text(request: PreprocessRequest):
+
+    try:
+        result = text_preprocessor.preprocess(request.text)
+        return result
+
+    except ValueError as e:
+        raise HTTPException(
+            status_code=400,
+            detail=str(e)
+        )
