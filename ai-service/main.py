@@ -7,6 +7,9 @@ from app.services.text_preprocessor import TextPreprocessor
 from pydantic import BaseModel
 from app.services.skill_extractor import SkillExtractor
 from app.services.skill_normalizer import SkillNormalizer
+from app.services.resume_information_extractor import (
+    ResumeInformationExtractor
+)
 app = FastAPI(
     title="AI Resume Screening Service",
     description="AI service for resume processing and job matching",
@@ -15,6 +18,7 @@ app = FastAPI(
 resume_parser = ResumeParser()
 skill_extractor = SkillExtractor()
 skill_normalizer = SkillNormalizer()
+resume_information_extractor = ResumeInformationExtractor()
 @app.get("/health")
 def health_check():
     return {
@@ -88,5 +92,19 @@ class SkillNormalizationRequest(BaseModel):
 def normalize_skills(request: SkillNormalizationRequest):
     try:
         return skill_normalizer.normalize_skills(request.skills)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+class ResumeInformationRequest(BaseModel):
+    text: str
+
+
+@app.post("/extract-resume-info")
+def extract_resume_info(request: ResumeInformationRequest):
+    try:
+        return resume_information_extractor.extract_information(
+            request.text
+        )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
